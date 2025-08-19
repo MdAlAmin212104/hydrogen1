@@ -16,6 +16,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
+import fontStyle from './styles/fonts.css?url';
 import {PageLayout} from './components/PageLayout';
 
 export type RootLoader = typeof loader;
@@ -54,6 +55,10 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
  */
 export function links() {
   return [
+    { rel: "stylesheet", href: tailwindCss },
+    {rel: "stylesheet", href: resetStyles },
+    {rel: "stylesheet", href: appStyles },
+    {rel: "stylesheet", href: fontStyle },
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -151,9 +156,10 @@ export function Layout({children}: {children?: React.ReactNode}) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {/* <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={tailwindCss}></link>
-        <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <link rel="stylesheet" href={fontStyle}></link> */}
         <Meta />
         <Links />
       </head>

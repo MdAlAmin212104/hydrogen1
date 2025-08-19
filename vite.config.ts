@@ -7,12 +7,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
-    tailwindcss(),
-    hydrogen(),
-    oxygen(),
-    reactRouter(),
-    tsconfigPaths(),
-  ],
+  tailwindcss(),
+  hydrogen(),
+  oxygen(),
+  reactRouter(),
+  tsconfigPaths(),
+],
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:
