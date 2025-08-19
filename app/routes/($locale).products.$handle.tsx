@@ -102,7 +102,8 @@ export default function Product() {
   const {title, descriptionHtml} = product;
 
   return (
-    <div className="product">
+    <div>
+      <div className="product">
       <ProductImage image={selectedVariant?.image} />
       <div className="product-main">
         <h1>{title}</h1>
@@ -139,6 +140,10 @@ export default function Product() {
           ],
         }}
       />
+    </div>
+    <div>
+      <h1>this is text on product details page</h1>
+    </div>
     </div>
   );
 }
