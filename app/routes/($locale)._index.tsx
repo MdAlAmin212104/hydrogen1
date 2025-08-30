@@ -5,6 +5,12 @@ import {ProductItem} from '~/components/ProductItem';
 import { RecommendedProducts } from '~/components/recommended';
 import { CollectionProducts } from '~/components/collection';
 import { HeroSections } from '~/components/Hero';
+import { AllProducts } from '~/components/AllProducts';
+import { FeaturedCollection } from '~/components/FeaturedCollection';
+import type {
+  FeaturedCollectionQuery,
+  RecommendedProductsQuery,
+} from 'storefrontapi.generated';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -57,19 +63,34 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       return null;
     });
 
+
+
+  const AllProducts = context.storefront
+    .query(ALL_PRODUCTS_QUERY)
+    .catch((error) => {
+      console.error(error);
+      return null;
+    })
+
   return {
     recommendedProducts,
     collectionProducts,
+    AllProducts,
   };
 }
+
+
+
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
       <HeroSections/>
+      <FeaturedCollection collection= {data.featuredCollection}/>
       <CollectionProducts products={data.collectionProducts} />
       <RecommendedProducts products={data.recommendedProducts} />
+      <AllProducts products={data.AllProducts}/>
     </div>
   );
 }
@@ -91,7 +112,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
+    collections(first: 1, sortKey: TITLE, reverse: true) {
       nodes {
         ...FeaturedCollection
       }
@@ -154,6 +175,37 @@ const COLLECTION_PRODUCTS_QUERY = `#graphql
     products(first: 4, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...CollectionProduct
+      }
+    }
+  }
+` as const;
+
+
+
+const ALL_PRODUCTS_QUERY = `#graphql
+  fragment AllProductsFragment on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      url
+      altText
+      width
+      height
+    }
+  }
+  query AllProducts($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 20, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...AllProductsFragment
       }
     }
   }
