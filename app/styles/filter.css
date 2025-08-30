@@ -1,0 +1,6 @@
+.collection-filter-container > ul{
+    display: none;
+}
+.collection-filter-container.show > ul{
+    display: block;
+}
